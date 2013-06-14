@@ -10,6 +10,7 @@ from haystack.query import SearchQuerySet
 class SearchApplication(Application):
     name = 'search'
     search_view = views.MultiFacetedSearchView
+    suggest_view = views.SuggestionsView
 
     def get_urls(self):
         # Build SQS
@@ -25,6 +26,8 @@ class SearchApplication(Application):
         urlpatterns = patterns('',
             url(r'^$', self.search_view(form_class=forms.MultiFacetedSearchForm),
                 name='search'),
+            url(r'^suggest/$', self.suggest_view.as_view(),
+                               name='suggest'),
             url(r'^default/$', search_view_factory(
                 view_class=views.FacetedSearchView,
                 form_class=forms.PriceRangeSearchForm,
